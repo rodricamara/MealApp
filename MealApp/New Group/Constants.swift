@@ -6,4 +6,8 @@
 //  Copyright © 2020 Rodrigo Camara Robles. All rights reserved.
 //
 
+//MARK: -  Service
 let endpoint = "https://www.themealdb.com/api/json/v1/1/search.php?s="
+
+//MARK: - Constraints
+let searchBarHeight = 40
