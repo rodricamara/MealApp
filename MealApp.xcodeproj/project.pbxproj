@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 50;
+	objectVersion = 51;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -11,6 +11,12 @@
 		049B8E0124DB64AA00CFE6C7 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 049B8E0024DB64AA00CFE6C7 /* SceneDelegate.swift */; };
 		049B8E0824DB64CA00CFE6C7 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 049B8E0724DB64CA00CFE6C7 /* Assets.xcassets */; };
 		049B8E1624DB64CC00CFE6C7 /* MealAppTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 049B8E1524DB64CC00CFE6C7 /* MealAppTests.swift */; };
+		049B8E2224DB66FE00CFE6C7 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 049B8E2124DB66FE00CFE6C7 /* Constants.swift */; };
+		049B8E2524DB674900CFE6C7 /* MealDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 049B8E2424DB674900CFE6C7 /* MealDataManager.swift */; };
+		049B8E2824DB677900CFE6C7 /* Coordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 049B8E2724DB677900CFE6C7 /* Coordinator.swift */; };
+		049B8E2A24DB679900CFE6C7 /* ApplicationCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 049B8E2924DB679900CFE6C7 /* ApplicationCoordinator.swift */; };
+		049B8E2C24DB67BF00CFE6C7 /* MealListCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 049B8E2B24DB67BF00CFE6C7 /* MealListCoordinator.swift */; };
+		049B8E2E24DB67F800CFE6C7 /* MealDetailCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 049B8E2D24DB67F800CFE6C7 /* MealDetailCoordinator.swift */; };
 		E9C4C8FE3921013E02E2D8AB /* Pods_MealApp.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 83FCBE9BB557641FF544207A /* Pods_MealApp.framework */; };
 /* End PBXBuildFile section */
 
@@ -33,6 +39,12 @@
 		049B8E1124DB64CB00CFE6C7 /* MealAppTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = MealAppTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		049B8E1524DB64CC00CFE6C7 /* MealAppTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MealAppTests.swift; sourceTree = "<group>"; };
 		049B8E1724DB64CC00CFE6C7 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		049B8E2124DB66FE00CFE6C7 /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
+		049B8E2424DB674900CFE6C7 /* MealDataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MealDataManager.swift; sourceTree = "<group>"; };
+		049B8E2724DB677900CFE6C7 /* Coordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Coordinator.swift; sourceTree = "<group>"; };
+		049B8E2924DB679900CFE6C7 /* ApplicationCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApplicationCoordinator.swift; sourceTree = "<group>"; };
+		049B8E2B24DB67BF00CFE6C7 /* MealListCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MealListCoordinator.swift; sourceTree = "<group>"; };
+		049B8E2D24DB67F800CFE6C7 /* MealDetailCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MealDetailCoordinator.swift; sourceTree = "<group>"; };
 		83FCBE9BB557641FF544207A /* Pods_MealApp.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_MealApp.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		8BBE53A3041E0BEF4F88B048 /* Pods-MealApp.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MealApp.debug.xcconfig"; path = "Target Support Files/Pods-MealApp/Pods-MealApp.debug.xcconfig"; sourceTree = "<group>"; };
 		A712A8955FDAAF80E9FB467D /* Pods-MealApp.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MealApp.release.xcconfig"; path = "Target Support Files/Pods-MealApp/Pods-MealApp.release.xcconfig"; sourceTree = "<group>"; };
@@ -80,6 +92,9 @@
 		049B8DFD24DB64AA00CFE6C7 /* MealApp */ = {
 			isa = PBXGroup;
 			children = (
+				049B8E2624DB676700CFE6C7 /* Protocols */,
+				049B8E2324DB672500CFE6C7 /* Networking */,
+				049B8E2024DB66CD00CFE6C7 /* Utils */,
 				049B8DFE24DB64AA00CFE6C7 /* AppDelegate.swift */,
 				049B8E0024DB64AA00CFE6C7 /* SceneDelegate.swift */,
 				049B8E0724DB64CA00CFE6C7 /* Assets.xcassets */,
@@ -97,6 +112,35 @@
 			path = MealAppTests;
 			sourceTree = "<group>";
 		};
+		049B8E2024DB66CD00CFE6C7 /* Utils */ = {
+			isa = PBXGroup;
+			children = (
+				049B8E2124DB66FE00CFE6C7 /* Constants.swift */,
+			);
+			name = Utils;
+			path = "New Group";
+			sourceTree = "<group>";
+		};
+		049B8E2324DB672500CFE6C7 /* Networking */ = {
+			isa = PBXGroup;
+			children = (
+				049B8E2424DB674900CFE6C7 /* MealDataManager.swift */,
+			);
+			name = Networking;
+			path = "New Group1";
+			sourceTree = "<group>";
+		};
+		049B8E2624DB676700CFE6C7 /* Protocols */ = {
+			isa = PBXGroup;
+			children = (
+				049B8E2724DB677900CFE6C7 /* Coordinator.swift */,
+				049B8E2924DB679900CFE6C7 /* ApplicationCoordinator.swift */,
+				049B8E2B24DB67BF00CFE6C7 /* MealListCoordinator.swift */,
+				049B8E2D24DB67F800CFE6C7 /* MealDetailCoordinator.swift */,
+			);
+			path = Protocols;
+			sourceTree = "<group>";
+		};
 		BC33F7499BBF1B2A284A9453 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
@@ -111,7 +155,6 @@
 				8BBE53A3041E0BEF4F88B048 /* Pods-MealApp.debug.xcconfig */,
 				A712A8955FDAAF80E9FB467D /* Pods-MealApp.release.xcconfig */,
 			);
-			name = Pods;
 			path = Pods;
 			sourceTree = "<group>";
 		};
@@ -258,8 +301,14 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				049B8E2524DB674900CFE6C7 /* MealDataManager.swift in Sources */,
+				049B8E2C24DB67BF00CFE6C7 /* MealListCoordinator.swift in Sources */,
 				049B8DFF24DB64AA00CFE6C7 /* AppDelegate.swift in Sources */,
+				049B8E2824DB677900CFE6C7 /* Coordinator.swift in Sources */,
+				049B8E2E24DB67F800CFE6C7 /* MealDetailCoordinator.swift in Sources */,
 				049B8E0124DB64AA00CFE6C7 /* SceneDelegate.swift in Sources */,
+				049B8E2224DB66FE00CFE6C7 /* Constants.swift in Sources */,
+				049B8E2A24DB679900CFE6C7 /* ApplicationCoordinator.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
