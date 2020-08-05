@@ -12,14 +12,17 @@ class ApplicationCoordinator: Coordinator {
     
     private let window: UIWindow
     private let rootViewController: UINavigationController
+    private var mealListCoordinator: MealListCoordinator?
     
     init(window: UIWindow) {
         self.window = window
         rootViewController = UINavigationController()
+        mealListCoordinator = MealListCoordinator(presenter: rootViewController)
     }
     
     func start() {
         window.rootViewController = rootViewController
+        mealListCoordinator?.start()
         window.makeKeyAndVisible()
     }
     

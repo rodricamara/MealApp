@@ -9,10 +9,18 @@
 import UIKit
 import SnapKit
 
+protocol MealListViewControllerDelegate: class {
+    
+    func mealListViewController(_ controller: MealListViewController, didSelect meal: Meal)
+    
+}
+
 class MealListViewController: UIViewController {
     
+    weak var delegate: MealListViewControllerDelegate?
+    
     //MARK: - Properties
-    var mealsSearchBar = UITableView(frame: .zero)
+    var mealsSearchBar = UISearchBar(frame: .zero)
     var mealsTableView = UITableView(frame: .zero)
     
     //MARK: - Lifecycle
@@ -23,7 +31,7 @@ class MealListViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        title = "Meals"
+        title = titleMealListViewController
     }
     
     //MARK: - Private Methods
@@ -31,7 +39,7 @@ class MealListViewController: UIViewController {
     private func applyMealsConstraints() {
         view.addSubview(mealsSearchBar)
         mealsSearchBar.snp.makeConstraints { (make) in
-            make.top.equalTo(view.snp.top)
+            make.top.equalTo(view.snp.top).offset(getNavigationBarHeight())
             make.left.equalTo(view.snp.left)
             make.right.equalTo(view.snp.right)
             make.height.equalTo(searchBarHeight)
@@ -46,4 +54,11 @@ class MealListViewController: UIViewController {
         }
     }
     
+    func getNavigationBarHeight() -> CGFloat {
+        if let navigationHeight = navigationController?.navigationBar.frame.height {
+            return navigationHeight + UIApplication.shared.statusBarFrame.height
+        } else {
+            return UIApplication.shared.statusBarFrame.height
+        }
+    }
 }
