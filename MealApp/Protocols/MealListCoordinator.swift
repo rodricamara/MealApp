@@ -34,5 +34,4 @@ extension MealListCoordinator: MealListViewControllerDelegate {
         self.mealDetailCoordinator = mealDetailCoordinator
         mealDetailCoordinator.start()
     }
-    
 }

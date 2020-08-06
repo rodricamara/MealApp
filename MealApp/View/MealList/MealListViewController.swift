@@ -16,10 +16,11 @@ protocol MealListViewControllerDelegate: class {
     func mealListViewController(_ controller: MealListViewController, didSelect meal: Meal)
 }
 
-class MealListViewController: UIViewController, UITableViewDataSource, UISearchBarDelegate  {
+class MealListViewController: UIViewController, UITableViewDataSource, UISearchBarDelegate, UITableViewDelegate  {
     
     weak var delegate: MealListViewControllerDelegate?
     weak var delegateTV: UITableViewDataSource?
+   // weak var tableViewDelegate: UITableViewDelegate?
     var mealDataManager = MealDataManager()
     var mealsArray = [Meal]()
     
@@ -36,6 +37,7 @@ class MealListViewController: UIViewController, UITableViewDataSource, UISearchB
     override func viewDidLoad() {
         super.viewDidLoad()
         mealsTableView.dataSource = self
+        mealsTableView.delegate = self
         mealsSearchBar.delegate = self
         title = titleMealListViewController
         getData("")
@@ -100,6 +102,12 @@ class MealListViewController: UIViewController, UITableViewDataSource, UISearchB
         } else {
             return UIApplication.shared.statusBarFrame.height
         }
+    }
+    
+    //MARK: - UITableViewDelegate
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let meal = mealsArray[indexPath.item]
+        delegate?.mealListViewController(self, didSelect: meal)
     }
     
     //MARK: - UITableViewDataSource
