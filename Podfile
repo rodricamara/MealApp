@@ -8,5 +8,6 @@ target 'MealApp' do
   # Pods for MealApp
   pod 'SnapKit' 
   pod 'Alamofire'
+  pod 'SDWebImage'
 
 end

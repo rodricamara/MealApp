@@ -14,3 +14,11 @@ let searchBarHeight = 40
 
 //MARK: - Langs
 let titleMealListViewController = "Meals"
+let MealCell = "mealCell"
+let cellPlaceHolder = "placeholder"
+
+
+//MARK: - Fonts: http://iosfonts.com/
+let fontAppleSD = "Apple SD Gothic Neo";
+let fontAvenir = "Avenir";
+let fontGilSans = "Gill Sans";

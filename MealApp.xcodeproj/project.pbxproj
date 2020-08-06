@@ -20,6 +20,7 @@
 		049B8E3124DB691600CFE6C7 /* Model.swift in Sources */ = {isa = PBXBuildFile; fileRef = 049B8E3024DB691600CFE6C7 /* Model.swift */; };
 		049B8E3624DB699700CFE6C7 /* MealDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 049B8E3524DB699700CFE6C7 /* MealDetailViewController.swift */; };
 		049B8E3824DB69CA00CFE6C7 /* MealListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 049B8E3724DB69CA00CFE6C7 /* MealListViewController.swift */; };
+		049B8E3B24DB74E100CFE6C7 /* MealCellView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 049B8E3A24DB74E100CFE6C7 /* MealCellView.swift */; };
 		E9C4C8FE3921013E02E2D8AB /* Pods_MealApp.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 83FCBE9BB557641FF544207A /* Pods_MealApp.framework */; };
 /* End PBXBuildFile section */
 
@@ -51,6 +52,7 @@
 		049B8E3024DB691600CFE6C7 /* Model.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Model.swift; sourceTree = "<group>"; };
 		049B8E3524DB699700CFE6C7 /* MealDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MealDetailViewController.swift; sourceTree = "<group>"; };
 		049B8E3724DB69CA00CFE6C7 /* MealListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MealListViewController.swift; sourceTree = "<group>"; };
+		049B8E3A24DB74E100CFE6C7 /* MealCellView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MealCellView.swift; sourceTree = "<group>"; };
 		83FCBE9BB557641FF544207A /* Pods_MealApp.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_MealApp.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		8BBE53A3041E0BEF4F88B048 /* Pods-MealApp.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MealApp.debug.xcconfig"; path = "Target Support Files/Pods-MealApp/Pods-MealApp.debug.xcconfig"; sourceTree = "<group>"; };
 		A712A8955FDAAF80E9FB467D /* Pods-MealApp.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MealApp.release.xcconfig"; path = "Target Support Files/Pods-MealApp/Pods-MealApp.release.xcconfig"; sourceTree = "<group>"; };
@@ -178,6 +180,7 @@
 			isa = PBXGroup;
 			children = (
 				049B8E3724DB69CA00CFE6C7 /* MealListViewController.swift */,
+				049B8E3A24DB74E100CFE6C7 /* MealCellView.swift */,
 			);
 			path = MealList;
 			sourceTree = "<group>";
@@ -353,6 +356,7 @@
 				049B8E2224DB66FE00CFE6C7 /* Constants.swift in Sources */,
 				049B8E3624DB699700CFE6C7 /* MealDetailViewController.swift in Sources */,
 				049B8E2A24DB679900CFE6C7 /* ApplicationCoordinator.swift in Sources */,
+				049B8E3B24DB74E100CFE6C7 /* MealCellView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
