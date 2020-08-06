@@ -16,7 +16,7 @@ protocol MealListViewControllerDelegate: class {
     func mealListViewController(_ controller: MealListViewController, didSelect meal: Meal)
 }
 
-class MealListViewController: UIViewController, UITableViewDataSource  {
+class MealListViewController: UIViewController, UITableViewDataSource, UISearchBarDelegate  {
     
     weak var delegate: MealListViewControllerDelegate?
     weak var delegateTV: UITableViewDataSource?
@@ -36,8 +36,9 @@ class MealListViewController: UIViewController, UITableViewDataSource  {
     override func viewDidLoad() {
         super.viewDidLoad()
         mealsTableView.dataSource = self
+        mealsSearchBar.delegate = self
         title = titleMealListViewController
-        getData()
+        getData("")
     }
     
     //MARK: - Private Methods
@@ -60,8 +61,13 @@ class MealListViewController: UIViewController, UITableViewDataSource  {
         }
     }
     
-    private func getData(){
-        mealDataManager.fetchData(endpoint: endpoint) { (AFDataResponse) in
+    private func getData(_ meal: String){
+        
+        weak var weakSelf: MealListViewController? = self
+        mealsArray = []
+        let finalEndpoint = "\(endpoint)\(meal)"
+        
+        mealDataManager.fetchData(endpoint: finalEndpoint) { (AFDataResponse) in
             
             switch AFDataResponse.result {
             case .success(let value as [String: Any]):
@@ -74,12 +80,12 @@ class MealListViewController: UIViewController, UITableViewDataSource  {
                             let jsonMealData = try? JSONSerialization.data(withJSONObject: meal, options: .prettyPrinted)
                             if let meal = try? JSONDecoder().decode(Meal.self, from: jsonMealData!) {
                                 print(meal)
-                                self.mealsArray.append(meal)
+                                weakSelf?.mealsArray.append(meal)
                             }
                         }
                     }
                 }
-                self.mealsTableView.reloadData()
+                weakSelf?.mealsTableView.reloadData()
             case .failure(let error):
                 print("FAILURE: \(error)")
             default:
@@ -96,7 +102,7 @@ class MealListViewController: UIViewController, UITableViewDataSource  {
         }
     }
     
-    //MARK: UITableViewDataSource
+    //MARK: - UITableViewDataSource
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return self.mealsArray.count
     }
@@ -117,6 +123,9 @@ class MealListViewController: UIViewController, UITableViewDataSource  {
         return cell
     }
     
-    
+    //MARK: - UISearchBarDelegate
+    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
+        getData(searchText)
+    }
 }
 
