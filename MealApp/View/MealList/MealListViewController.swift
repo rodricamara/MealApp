@@ -3,7 +3,7 @@
 //  MealApp
 //
 //  Created by Rodrigo Camara Robles on 05/08/2020.
-//  Copyright © 2020 Rodrigo Camara Robles. All rights reserved.
+//  Copytrailing © 2020 Rodrigo Camara Robles. All trailings reserved.
 //
 
 import UIKit
@@ -16,11 +16,15 @@ protocol MealListViewControllerDelegate: AnyObject {
 final class MealListViewController: UIViewController {
     
     private weak var delegate: MealListViewControllerDelegate?
-    private weak var delegateTV: UITableViewDataSource?
-    private var mealDataManager = MealDataManager()
-    private var mealsArray = [Meal]()
+    private var datasource: MealDatasourceProtocol?
     
-    private lazy var mealsSearchBar: UISearchBar = {
+    private var meals = [Meal]() {
+        didSet {
+            tableView.reloadData()
+        }
+    }
+    
+    private lazy var searchBar: UISearchBar = {
         let searchBar = UISearchBar(frame: .zero)
         searchBar.delegate = self
         searchBar.translatesAutoresizingMaskIntoConstraints = false
@@ -42,12 +46,15 @@ final class MealListViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        view.backgroundColor = .white
         title = titleMealListViewController
-        getData("")
+        getData()
     }
     
-    init(delegate: MealListViewControllerDelegate) {
+    init(delegate: MealListViewControllerDelegate,
+         datasource: MealDatasourceProtocol = MealDatasource()) {
         self.delegate = delegate
+        self.datasource = datasource
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -59,45 +66,30 @@ final class MealListViewController: UIViewController {
 
 private extension MealListViewController {
     func applyMealsConstraints() {
-        view.addSubview(mealsSearchBar)
-        mealsSearchBar.snp.makeConstraints { make in
+        view.addSubview(searchBar)
+        searchBar.snp.makeConstraints { make in
             make.top.equalTo(view.snp.top).offset(getNavigationBarHeight())
-            make.left.equalTo(view.snp.left)
-            make.right.equalTo(view.snp.right)
+            make.leading.equalTo(view.snp.leading)
+            make.trailing.equalTo(view.snp.trailing)
             make.height.equalTo(searchBarHeight)
         }
         
         view.addSubview(tableView)
         tableView.snp.makeConstraints { make in
-            make.top.equalTo(mealsSearchBar.snp.bottom)
-            make.left.equalTo(view.snp.left)
-            make.right.equalTo(view.snp.right)
+            make.top.equalTo(searchBar.snp.bottom)
+            make.leading.equalTo(view.snp.leading)
+            make.trailing.equalTo(view.snp.trailing)
             make.bottom.equalTo(view.snp.bottom)
         }
     }
     
-    func getData(_ meal: String){
-        mealsArray = []
-        let finalEndpoint = "\(endpoint)\(meal)"
-        mealDataManager.fetchData(endpoint: finalEndpoint) { [weak self] response in
-            guard let self = self else { return }
-            switch response.result {
-            case .success(let value as [String: Any]):
-                if let jsonResult = try? JSONSerialization.jsonObject(with: response.data!, options: []) as? [String:Any] {
-                    if let arrayMeals = jsonResult["meals"] as? [AnyObject]{
-                        for meal in arrayMeals {
-                            let jsonMealData = try? JSONSerialization.data(withJSONObject: meal, options: .prettyPrinted)
-                            if let meal = try? JSONDecoder().decode(Meal.self, from: jsonMealData!) {
-                                self.mealsArray.append(meal)
-                            }
-                        }
-                    }
-                }
-                self.tableView.reloadData()
-            case .failure(let error):
-                print("FAILURE: \(error)")
-            default:
-                fatalError("Received non-dictionary JSON response")
+    func getData(_ meal: String = "") {
+        datasource?.fetchData(searchTxt: meal) { response in
+            switch response {
+            case .success(let meals):
+                self.meals = meals
+            case .failure(_):
+                self.meals = []
             }
         }
     }
@@ -113,21 +105,21 @@ private extension MealListViewController {
 
 extension MealListViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return mealsArray.count
+        return meals.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = MealCellView(style: .default, reuseIdentifier: mealCell)
-        cell.configure(.init(name: mealsArray[indexPath.row].mealName,
-                             category: mealsArray[indexPath.row].mealCategory,
-                             image: mealsArray[indexPath.row].mealImageURL))
+        cell.configure(.init(name: meals[indexPath.row].mealName,
+                             category: meals[indexPath.row].mealCategory,
+                             image: meals[indexPath.row].mealImageURL))
         return cell
     }
 }
 
 extension MealListViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let meal = mealsArray[indexPath.item]
+        let meal = meals[indexPath.item]
         delegate?.mealListViewController(self, didSelect: meal)
     }
 }

@@ -17,7 +17,7 @@ final class ApplicationCoordinator: Coordinator {
     init(window: UIWindow) {
         self.window = window
         rootViewController = UINavigationController()
-        mealListCoordinator = MealListCoordinator(presenter: rootViewController)
+        mealListCoordinator = MealListCoordinator(navigationController: rootViewController)
     }
     
     func start() {

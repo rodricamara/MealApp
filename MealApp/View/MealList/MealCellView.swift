@@ -3,17 +3,24 @@
 //  MealApp
 //
 //  Created by Rodrigo Camara Robles on 05/08/2020.
-//  Copyright © 2020 Rodrigo Camara Robles. All rights reserved.
+//  Copytrailing © 2020 Rodrigo Camara Robles. All trailings reserved.
 //
 
 import UIKit
 import SnapKit
+import SDWebImage
 
 protocol MealCellProtocol {
     func configure(_ viewModel: MealViewModel)
 }
 
 final class MealCellView: UITableViewCell {
+    
+    private lazy var descriptionView: UIView = {
+        let view = UIView(frame: .zero)
+        view.translatesAutoresizingMaskIntoConstraints = false
+        return view
+    }()
     
     private lazy var name: UILabel = {
         let label = UILabel(frame: .zero)
@@ -68,29 +75,37 @@ private extension MealCellView {
     
     func buildViewHierarchy() {
         contentView.addSubview(image)
-        contentView.addSubview(name)
-        contentView.addSubview(category)
+        contentView.addSubview(descriptionView)
+        descriptionView.addSubview(name)
+        descriptionView.addSubview(category)
     }
     
     func setUpConstraints() {
         image.snp.makeConstraints { make -> Void in
             make.top.equalTo(contentView.snp.top).offset(10)
             make.bottom.equalTo(contentView.snp.bottom).offset(-10)
-            make.left.equalTo(contentView.snp.left).offset(10)
+            make.leading.equalTo(contentView.snp.leading).offset(10)
             make.height.equalTo(50)
-            make.width.equalTo(50)
+            make.width.equalTo(image.snp.height)
         }
         
+        descriptionView.snp.makeConstraints { make -> Void in
+            make.centerY.equalTo(image.snp.centerY)
+            make.leading.equalTo(image.snp.trailing).offset(10)
+            make.trailing.equalTo(contentView.snp.trailing).offset(-10)
+        }
+
         name.snp.makeConstraints { make -> Void in
-            make.top.equalTo(contentView.snp.top).offset(10)
-            make.left.equalTo(image.snp.right).offset(10)
-            make.right.equalTo(contentView.snp.right).offset(-10)
+            make.top.equalTo(descriptionView.snp.top)
+            make.leading.equalTo(descriptionView.snp.leading)
+            make.trailing.equalTo(descriptionView.snp.trailing)
         }
         
         category.snp.makeConstraints { make -> Void in
-            make.top.equalTo(name.snp.bottom).offset(5)
-            make.left.equalTo(image.snp.right).offset(10)
-            make.right.equalTo(contentView.snp.right).offset(-10)
+            make.top.equalTo(name.snp.bottom).offset(2)
+            make.leading.equalTo(descriptionView.snp.leading)
+            make.trailing.equalTo(descriptionView.snp.trailing)
+            make.bottom.equalTo(descriptionView.snp.bottom)
         }
     }
 }

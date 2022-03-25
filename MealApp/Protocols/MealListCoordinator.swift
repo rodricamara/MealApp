@@ -10,26 +10,25 @@ import UIKit
 
 final class MealListCoordinator: Coordinator {
     
-    private var presenter: UINavigationController
+    private var navigationController: UINavigationController
     private var mealDetailCoordinator: MealDetailCoordinator?
     private var mealListViewController: MealListViewController?
     
-    init(presenter: UINavigationController) {
-        self.presenter = presenter
+    init(navigationController: UINavigationController) {
+        self.navigationController = navigationController
     }
     
     func start() {
         let mealListViewController = MealListViewController(delegate: self)
-        
         self.mealListViewController = mealListViewController
-        presenter.pushViewController(mealListViewController, animated: true)
+        navigationController.pushViewController(mealListViewController, animated: true)
     }
 }
 
 extension MealListCoordinator: MealListViewControllerDelegate {
     
     func mealListViewController(_ controller: MealListViewController, didSelect meal: Meal) {
-        let mealDetailCoordinator = MealDetailCoordinator(presenter: presenter, meal: meal)
+        let mealDetailCoordinator = MealDetailCoordinator(presenter: navigationController, meal: meal)
         self.mealDetailCoordinator = mealDetailCoordinator
         mealDetailCoordinator.start()
     }

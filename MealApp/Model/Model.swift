@@ -20,13 +20,4 @@ struct Meal: Codable {
         case mealInstructions = "strInstructions"
         case mealVideoURL = "strYoutube"
     }
-    
-    init(from decoder: Decoder) throws {
-        let values = try decoder.container(keyedBy: CodingKeys.self)
-        mealName = try values.decode(String.self, forKey: .mealName)
-        mealCategory = try values.decode(String.self, forKey: .mealCategory)
-        mealImageURL = try values.decode(String.self, forKey: .mealImageURL)
-        mealInstructions = try values.decode(String.self, forKey: .mealInstructions)
-        mealVideoURL = try values.decode(String.self, forKey: .mealVideoURL)
-    }
 }
