@@ -8,7 +8,7 @@
 
 import UIKit
 
-class MealListCoordinator: Coordinator {
+final class MealListCoordinator: Coordinator {
     
     private var presenter: UINavigationController
     private var mealDetailCoordinator: MealDetailCoordinator?
@@ -19,8 +19,7 @@ class MealListCoordinator: Coordinator {
     }
     
     func start() {
-        let mealListViewController = MealListViewController()
-        mealListViewController.delegate = self
+        let mealListViewController = MealListViewController(delegate: self)
         
         self.mealListViewController = mealListViewController
         presenter.pushViewController(mealListViewController, animated: true)

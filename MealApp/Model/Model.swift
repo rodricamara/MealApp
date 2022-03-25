@@ -7,14 +7,11 @@
 //
 
 struct Meal: Codable {
-    
-    //MARK: - Properties
     var mealName: String
     var mealCategory: String
     var mealImageURL: String
     var mealInstructions: String
     var mealVideoURL: String
-    
     
     enum CodingKeys: String, CodingKey {
         case mealName = "strMeal"

@@ -8,7 +8,7 @@
 
 import UIKit
 
-class MealDetailCoordinator: Coordinator {
+final class MealDetailCoordinator: Coordinator {
     
     private let presenter: UINavigationController
     private var mealDetailViewController: MealDetailViewController?

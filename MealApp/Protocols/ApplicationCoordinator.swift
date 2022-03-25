@@ -8,7 +8,7 @@
 
 import UIKit
 
-class ApplicationCoordinator: Coordinator {
+final class ApplicationCoordinator: Coordinator {
     
     private let window: UIWindow
     private let rootViewController: UINavigationController
@@ -25,5 +25,4 @@ class ApplicationCoordinator: Coordinator {
         mealListCoordinator?.start()
         window.makeKeyAndVisible()
     }
-    
 }

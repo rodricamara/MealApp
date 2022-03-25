@@ -8,54 +8,67 @@
 
 import UIKit
 import SnapKit
-import SDWebImage
-import Foundation
 
-protocol MealListViewControllerDelegate: class {
-    
+protocol MealListViewControllerDelegate: AnyObject {
     func mealListViewController(_ controller: MealListViewController, didSelect meal: Meal)
 }
 
-class MealListViewController: UIViewController, UITableViewDataSource, UISearchBarDelegate, UITableViewDelegate  {
+final class MealListViewController: UIViewController {
     
-    weak var delegate: MealListViewControllerDelegate?
-    weak var delegateTV: UITableViewDataSource?
-   // weak var tableViewDelegate: UITableViewDelegate?
-    var mealDataManager = MealDataManager()
-    var mealsArray = [Meal]()
+    private weak var delegate: MealListViewControllerDelegate?
+    private weak var delegateTV: UITableViewDataSource?
+    private var mealDataManager = MealDataManager()
+    private var mealsArray = [Meal]()
     
-    //MARK: - Properties
-    var mealsSearchBar = UISearchBar(frame: .zero)
-    var mealsTableView = UITableView(frame: .zero)
+    private lazy var mealsSearchBar: UISearchBar = {
+        let searchBar = UISearchBar(frame: .zero)
+        searchBar.delegate = self
+        searchBar.translatesAutoresizingMaskIntoConstraints = false
+        return searchBar
+    }()
     
-    //MARK: - Lifecycle
-    override func loadView(){
+    private lazy var tableView: UITableView = {
+        let tableView = UITableView(frame: .zero)
+        tableView.delegate = self
+        tableView.dataSource = self
+        tableView.translatesAutoresizingMaskIntoConstraints = false
+        return tableView
+    }()
+    
+    override func loadView() {
         super.loadView()
         applyMealsConstraints()
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        mealsTableView.dataSource = self
-        mealsTableView.delegate = self
-        mealsSearchBar.delegate = self
         title = titleMealListViewController
         getData("")
     }
     
-    //MARK: - Private Methods
+    init(delegate: MealListViewControllerDelegate) {
+        self.delegate = delegate
+        super.init(nibName: nil, bundle: nil)
+    }
     
-    private func applyMealsConstraints() {
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
+}
+
+private extension MealListViewController {
+    func applyMealsConstraints() {
         view.addSubview(mealsSearchBar)
-        mealsSearchBar.snp.makeConstraints { (make) in
+        mealsSearchBar.snp.makeConstraints { make in
             make.top.equalTo(view.snp.top).offset(getNavigationBarHeight())
             make.left.equalTo(view.snp.left)
             make.right.equalTo(view.snp.right)
             make.height.equalTo(searchBarHeight)
         }
         
-        view.addSubview(mealsTableView)
-        mealsTableView.snp.makeConstraints { (make) in
+        view.addSubview(tableView)
+        tableView.snp.makeConstraints { make in
             make.top.equalTo(mealsSearchBar.snp.bottom)
             make.left.equalTo(view.snp.left)
             make.right.equalTo(view.snp.right)
@@ -63,31 +76,24 @@ class MealListViewController: UIViewController, UITableViewDataSource, UISearchB
         }
     }
     
-    private func getData(_ meal: String){
-        
-        weak var weakSelf: MealListViewController? = self
+    func getData(_ meal: String){
         mealsArray = []
         let finalEndpoint = "\(endpoint)\(meal)"
-        
-        mealDataManager.fetchData(endpoint: finalEndpoint) { (AFDataResponse) in
-            
-            switch AFDataResponse.result {
+        mealDataManager.fetchData(endpoint: finalEndpoint) { [weak self] response in
+            guard let self = self else { return }
+            switch response.result {
             case .success(let value as [String: Any]):
-                print ("Status Code: \(AFDataResponse.response!.statusCode)")
-                print("SUCCESS: \(value)")
-                
-                if let jsonResult = try? JSONSerialization.jsonObject(with: AFDataResponse.data!, options: []) as? [String:Any] {
+                if let jsonResult = try? JSONSerialization.jsonObject(with: response.data!, options: []) as? [String:Any] {
                     if let arrayMeals = jsonResult["meals"] as? [AnyObject]{
                         for meal in arrayMeals {
                             let jsonMealData = try? JSONSerialization.data(withJSONObject: meal, options: .prettyPrinted)
                             if let meal = try? JSONDecoder().decode(Meal.self, from: jsonMealData!) {
-                                print(meal)
-                                weakSelf?.mealsArray.append(meal)
+                                self.mealsArray.append(meal)
                             }
                         }
                     }
                 }
-                weakSelf?.mealsTableView.reloadData()
+                self.tableView.reloadData()
             case .failure(let error):
                 print("FAILURE: \(error)")
             default:
@@ -103,37 +109,31 @@ class MealListViewController: UIViewController, UITableViewDataSource, UISearchB
             return UIApplication.shared.statusBarFrame.height
         }
     }
+}
+
+extension MealListViewController: UITableViewDataSource {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return mealsArray.count
+    }
     
-    //MARK: - UITableViewDelegate
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = MealCellView(style: .default, reuseIdentifier: mealCell)
+        cell.configure(.init(name: mealsArray[indexPath.row].mealName,
+                             category: mealsArray[indexPath.row].mealCategory,
+                             image: mealsArray[indexPath.row].mealImageURL))
+        return cell
+    }
+}
+
+extension MealListViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let meal = mealsArray[indexPath.item]
         delegate?.mealListViewController(self, didSelect: meal)
     }
-    
-    //MARK: - UITableViewDataSource
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return self.mealsArray.count
-    }
-    
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = MealCellView(style: .default, reuseIdentifier: MealCell)
-        
-        let urlString = mealsArray[indexPath.row].mealImageURL
-        cell.mealImage.sd_setImage(with: URL(string: urlString), placeholderImage: UIImage(named: cellPlaceHolder), completed: nil)
-        
-        cell.mealName.text = mealsArray[indexPath.row].mealName
-        
-        cell.mealCategory.text = mealsArray[indexPath.row].mealCategory
+}
 
-        cell.needsUpdateConstraints()
-        cell.updateConstraintsIfNeeded()
-        
-        return cell
-    }
-    
-    //MARK: - UISearchBarDelegate
+extension MealListViewController: UISearchBarDelegate {
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
         getData(searchText)
     }
 }
-

@@ -9,11 +9,7 @@
 import Alamofire
 
 struct MealDataManager {
-    
-    //MARK: - Properties
     static var mealDataManager = MealDataManager()
-    
-    //MARK: - Public Methods
     
     func fetchData(endpoint: String, completion: @escaping (AFDataResponse<Any>) -> Void) {
         AF.request(endpoint,
@@ -23,6 +19,5 @@ struct MealDataManager {
                    headers: nil).validate().responseJSON { DefaultDataResponse in
                     completion(DefaultDataResponse)
         }
-        
     }
 }
